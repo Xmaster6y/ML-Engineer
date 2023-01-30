@@ -17,9 +17,11 @@ The story.
 
 ```[tasklist]
 ## Issues
-- [ ] Issue 1
+
+- [ ] Link to issue 1
 - [ ] Title 1
-``` 
+```
 
 ## Tasks
-- [ ] Task 1
+
+* [ ] Task 1
