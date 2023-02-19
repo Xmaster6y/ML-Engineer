@@ -1,14 +1,8 @@
-# ML-Engineer
+# Project 2
 
-## Project 1
+Realize the cleaning and exploration of a dataset with the goal to develop a health application.
 
-Goals definition and planning creation.
-
-## Project 2
-
-Data cleaning and exploration based on a proof-of-concept analysis of a food dataset.
-
-### Deliverables:
+## Deliverables
 
 * Cleaning notebook
 
@@ -18,4 +12,4 @@ Data cleaning and exploration based on a proof-of-concept analysis of a food dat
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Xmaster6y/ML-Engineer/blob/main/Project_2/exploration_notebook.ipynb)
 
-* Presentation (fr) [->](./Project_2/presentation.pdf)
+* Presentation (fr) [->](./presentation.pdf)
