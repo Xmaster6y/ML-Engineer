@@ -19,7 +19,7 @@ The story.
 ## Issues
 - [ ] Issue 1
 - [ ] Title 1
-``` 
+```
 
 ## Tasks
 - [ ] Task 1
