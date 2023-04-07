@@ -16,4 +16,8 @@ Predict the energy consumption of a building based on its construction details.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Xmaster6y/ML-Engineer/blob/develop/Project_3/prediction_notebook_2.ipynb)
 
+* Energy score relevance notebook
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Xmaster6y/ML-Engineer/blob/develop/Project_3/score_relevance.ipynb)
+
 * Presentation (fr) [->](./presentation.pdf)
