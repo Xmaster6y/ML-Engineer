@@ -4,14 +4,16 @@ import pytest
 
 from helpers import Evaluator
 
+
 @pytest.fixture
 def default_evaluator():
     """Returns a default evaluator."""
     return Evaluator()
 
+
 class TestEvaluatorCreation:
     """Tests for the Evaluator class.
-    
+
     Methods
     -------
     test_default_evaluator(default_evaluator)
@@ -19,9 +21,10 @@ class TestEvaluatorCreation:
     test_evaluator_with_model()
         Tests the evaluator with a model.
     """
+
     def test_default_evaluator(self, default_evaluator):
         """Tests the default evaluator.
-        
+
         Parameters
         ----------
         default_evaluator : Evaluator
@@ -36,7 +39,7 @@ class TestEvaluatorCreation:
 
     def test_evaluator_with_model(self):
         """Tests the evaluator with a model.
-        
+
         Raises
         ------
         AssertionError

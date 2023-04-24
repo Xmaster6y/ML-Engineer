@@ -1,12 +1,13 @@
 """This module contains the Evaluator class,
  which is used to evaluate the performance of a model.
- 
+
  author: Yoann Poupart
  """
 
+
 class Evaluator:
     """This class is used to evaluate the performance of a model.
-    
+
     Attributes
     ----------
     model : str
@@ -17,6 +18,7 @@ class Evaluator:
     evaluate()
         This method evaluates the performance of a model.
     """
+
     def __init__(self, model=None):
         """This method initializes the Evaluator class.
 
@@ -27,9 +29,9 @@ class Evaluator:
         """
         self.model = model
 
-    def evaluate(self)->float:
+    def evaluate(self) -> float:
         """This method evaluates the performance of a model.
-        
+
         Returns
         --------
         float
@@ -39,7 +41,7 @@ class Evaluator:
 
     def _check(self):
         """This method checks if the model is not None.
-        
+
         Raises
         ------
         ValueError

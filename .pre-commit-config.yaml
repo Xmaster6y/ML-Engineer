@@ -35,6 +35,8 @@ repos:
     rev: 6.0.0
     hooks:
     -   id: flake8
+        args:
+        -   --per-file-ignores=__init__.py:F401
 -   repo: https://github.com/pycqa/isort
     rev: 5.11.5
     hooks:
