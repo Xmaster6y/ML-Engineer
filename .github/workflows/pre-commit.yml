@@ -1,0 +1,27 @@
+name: pre-commit
+
+on:
+    pull_request:
+    push:
+        branches: [main]
+
+jobs:
+    pre-commit:
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        steps:
+        -   name: Check out repository code
+            uses: actions/checkout@v3
+        -   name: Setup Python
+            uses: actions/setup-python@v3
+        -   name: Run Python commands
+            run: |
+                pip install --upgrade pip
+                python -m venv venv_run
+                source venv_run/bin/activate
+        -   name: Install dependencies
+            run: |
+                pip install .[dev]
+        -   name: Pre-commit hooks
+            run: |
+                pre-commit run --all-files
