@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "helpers"
+version = "0.0.1"
+authors = [
+    { name="Yoann Poupart", email="yoann.poupart@ens-lyon.org" },
+]
+description = "Helpers for ML Engineering."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+]
+
+[project.optional-dependencies]
+test = [
+    'pytest',
+]
+dev = [
+    'pre-commit',
+    'pytest',
+    'poetry',
+    'sphinx',
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Xmaster6y/ML-Engineer"
+"Bug Tracker" = "https://github.com/Xmaster6y/ML-Engineer/issues"
+
+[tool.poetry]
+name = "helpers"
+version = "0.0.1"
+description = "Helpers for ML Engineering."
+license = "MIT"
+authors = [
+  "Yoann Poupart <yoann.poupart@ens-lyon.org>"
+]
