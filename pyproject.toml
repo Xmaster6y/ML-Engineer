@@ -17,6 +17,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
+    'numpy',
+    'matplotlib',
+    'seaborn',
 ]
 
 [project.optional-dependencies]
@@ -33,6 +36,19 @@ dev = [
 [project.urls]
 "Homepage" = "https://github.com/Xmaster6y/ML-Engineer"
 "Bug Tracker" = "https://github.com/Xmaster6y/ML-Engineer/issues"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = [
+    "src*",
+]
+exclude = [
+    "docs*",
+    "tests*",
+    "Projects*",
+]
 
 [tool.poetry]
 name = "helpers"
