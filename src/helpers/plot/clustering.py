@@ -335,10 +335,10 @@ def cluster_analysis(data, model, n_c, cols, frac=None, seed_frac=42):
         )
 
     if isinstance(data, pd.DataFrame):
-        df_seg = data.iloc[numbers]
+        df_seg = data.loc[numbers, cols]
     else:
         df_seg = pd.DataFrame(data[numbers], columns=cols)
-    df_seg["cluster"] = y[numbers]
+    df_seg.loc[:, "cluster"] = y[numbers]
     values = df_seg["cluster"].value_counts()
 
     sns.pairplot(df_seg, hue="cluster").fig.suptitle(
@@ -350,10 +350,8 @@ def cluster_analysis(data, model, n_c, cols, frac=None, seed_frac=42):
     plt.show()
 
     minmaxsc = ColumnTransformer(
-        [
-            ("tr", MinMaxScaler(), cols),
-        ],
-        remainder="passthrough",
+        [("tr", MinMaxScaler(), cols), ("cls", "passthrough", ["cluster"])],
+        remainder="drop",
     )
     df_seg_sc = pd.DataFrame(
         minmaxsc.fit_transform(df_seg), columns=df_seg.columns
