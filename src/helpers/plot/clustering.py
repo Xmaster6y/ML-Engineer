@@ -1,6 +1,6 @@
 import time
 from itertools import cycle, islice
-from typing import List, Optional, Union
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,7 +14,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
 def sklearn_comparison(
-    algorithms_to_take: List[Union[bool, str]],
+    algorithms_to_take: List[bool],
     datasets_to_take: Optional[List[bool]] = None,
     figsize=(26, 13),
 ):
@@ -130,9 +130,11 @@ def sklearn_comparison(
         (no_structure, {}),
     ]
 
+    final_datasets = [
+        ds for ds, take in zip(final_datasets, datasets_to_take) if take
+    ]
+
     for i_dataset, (dataset, algo_params) in enumerate(final_datasets):
-        if not datasets_to_take[i_dataset]:
-            continue
         # update parameters with dataset-specific values
         params = default_base.copy()  # type: ignore
         params.update(algo_params)  # type: ignore
@@ -195,7 +197,7 @@ def sklearn_comparison(
             n_components=params["n_clusters"], covariance_type="full"
         )
 
-        clustering_algorithms = (
+        clustering_algorithms = [
             ("KMeans", kmeans),
             ("MiniBatch\nKMeans", two_means),
             ("Biscecting\nKMeans", biscecting_kmeans),
@@ -208,7 +210,13 @@ def sklearn_comparison(
             ("OPTICS", optics),
             ("BIRCH", birch),
             ("Gaussian\nMixture", gmm),
-        )
+        ]
+
+        clustering_algorithms = [
+            ca
+            for ca, take in zip(clustering_algorithms, algorithms_to_take)
+            if take
+        ]
 
         for name, algorithm in clustering_algorithms:
             if isinstance(algorithms_to_take[0], str):
