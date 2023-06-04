@@ -7,4 +7,4 @@ pca
     Contains helper functions for plotting PCA.
 """
 
-from . import pca
+from . import clustering, pca

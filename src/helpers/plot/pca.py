@@ -86,5 +86,5 @@ def display_factorial_planes(
                 ha="center",
                 va="center",
             )
-    plt.title(f"Projection des individus (sur F{x+1} et F{y+1})")
+    plt.title(f"Individuals projection (on F{x+1} & F{y+1})")
     plt.show()
