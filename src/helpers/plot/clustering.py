@@ -213,8 +213,8 @@ def sklearn_comparison(
         ]
 
         if isinstance(algorithms_to_take[0], str):
-            algorithms_to_take = [
-                ca[0]
+            clustering_algorithms = [
+                ca
                 for ca in clustering_algorithms
                 if ca[0] in algorithms_to_take
             ]
