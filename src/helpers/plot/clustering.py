@@ -1,6 +1,6 @@
 import time
 from itertools import cycle, islice
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,7 +14,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
 def sklearn_comparison(
-    algorithms_to_take: List[bool],
+    algorithms_to_take: List[Union[str, bool]],
     datasets_to_take: Optional[List[bool]] = None,
     figsize=(26, 13),
 ):
@@ -212,11 +212,18 @@ def sklearn_comparison(
             ("Gaussian\nMixture", gmm),
         ]
 
-        clustering_algorithms = [
-            ca
-            for ca, take in zip(clustering_algorithms, algorithms_to_take)
-            if take
-        ]
+        if isinstance(algorithms_to_take[0], str):
+            algorithms_to_take = [
+                ca[0]
+                for ca in clustering_algorithms
+                if ca[0] in algorithms_to_take
+            ]
+        else:
+            clustering_algorithms = [
+                ca
+                for ca, take in zip(clustering_algorithms, algorithms_to_take)
+                if take
+            ]
 
         for name, algorithm in clustering_algorithms:
             if isinstance(algorithms_to_take[0], str):
