@@ -1,17 +1,23 @@
 import time
 from itertools import cycle, islice
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from numpy.random import default_rng
-from sklearn import datasets
+from sklearn import cluster, datasets, mixture
 from sklearn.compose import ColumnTransformer
+from sklearn.neighbors import kneighbors_graph
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
-def sklearn_comparison(clustering_algorithms, datasets_to_take=None):
+def sklearn_comparison(
+    algorithms_to_take: List[Union[bool, str]],
+    datasets_to_take: Optional[List[bool]] = None,
+    figsize=(26, 13),
+):
     """
     Compare the different clustering algorithms on the sklearn datasets.
 
@@ -59,7 +65,7 @@ def sklearn_comparison(clustering_algorithms, datasets_to_take=None):
     # ============
     # Set up cluster parameters
     # ============
-    plt.figure(figsize=(9 * 2 + 3, 13))
+    plt.figure(figsize=figsize)
     plt.subplots_adjust(
         left=0.02, right=0.98, bottom=0.001, top=0.95, wspace=0.05, hspace=0.01
     )
@@ -125,16 +131,92 @@ def sklearn_comparison(clustering_algorithms, datasets_to_take=None):
     ]
 
     for i_dataset, (dataset, algo_params) in enumerate(final_datasets):
+        if not datasets_to_take[i_dataset]:
+            continue
         # update parameters with dataset-specific values
-        params = default_base.copy()
-        params.update(algo_params)
+        params = default_base.copy()  # type: ignore
+        params.update(algo_params)  # type: ignore
 
         X, y = dataset
 
         # normalize dataset for easier parameter selection
         X = StandardScaler().fit_transform(X)
 
+        # estimate bandwidth for mean shift
+        bandwidth = cluster.estimate_bandwidth(X, quantile=params["quantile"])
+
+        # connectivity matrix for structured Ward
+        connectivity = kneighbors_graph(
+            X, n_neighbors=params["n_neighbors"], include_self=False
+        )
+        # make connectivity symmetric
+        connectivity = 0.5 * (connectivity + connectivity.T)
+
+        # ============
+        # Create cluster objects
+        # ============
+        ms = cluster.MeanShift(bandwidth=bandwidth, bin_seeding=True)
+        kmeans = cluster.KMeans(n_clusters=params["n_clusters"], n_init="auto")
+        biscecting_kmeans = cluster.BisectingKMeans(
+            n_clusters=params["n_clusters"]
+        )
+        two_means = cluster.MiniBatchKMeans(
+            n_clusters=params["n_clusters"], n_init="auto"
+        )
+        ward = cluster.AgglomerativeClustering(
+            n_clusters=params["n_clusters"],
+            linkage="ward",
+            connectivity=connectivity,
+        )
+        spectral = cluster.SpectralClustering(
+            n_clusters=params["n_clusters"],
+            eigen_solver="arpack",
+            affinity="nearest_neighbors",
+        )
+        dbscan = cluster.DBSCAN(eps=params["eps"])
+        optics = cluster.OPTICS(
+            min_samples=params["min_samples"],
+            xi=params["xi"],
+            min_cluster_size=params["min_cluster_size"],
+        )
+        affinity_propagation = cluster.AffinityPropagation(
+            damping=params["damping"],
+            preference=params["preference"],
+            random_state=0,
+        )
+        average_linkage = cluster.AgglomerativeClustering(
+            linkage="average",
+            metric="cityblock",
+            n_clusters=params["n_clusters"],
+            connectivity=connectivity,
+        )
+        birch = cluster.Birch(n_clusters=params["n_clusters"])
+        gmm = mixture.GaussianMixture(
+            n_components=params["n_clusters"], covariance_type="full"
+        )
+
+        clustering_algorithms = (
+            ("KMeans", kmeans),
+            ("MiniBatch\nKMeans", two_means),
+            ("Biscecting\nKMeans", biscecting_kmeans),
+            ("Affinity\nPropagation", affinity_propagation),
+            ("MeanShift", ms),
+            ("Spectral\nClustering", spectral),
+            ("Ward", ward),
+            ("Agglomerative\nClustering", average_linkage),
+            ("DBSCAN", dbscan),
+            ("OPTICS", optics),
+            ("BIRCH", birch),
+            ("Gaussian\nMixture", gmm),
+        )
+
         for name, algorithm in clustering_algorithms:
+            if isinstance(algorithms_to_take[0], str):
+                if name not in algorithms_to_take:
+                    continue
+            else:
+                if not algorithms_to_take[i_dataset]:
+                    continue
             t0 = time.time()
 
             algorithm.fit(X)
