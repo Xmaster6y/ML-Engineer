@@ -1,4 +1,5 @@
 import time
+import warnings
 from itertools import cycle, islice
 from typing import List, Optional, Union
 
@@ -234,7 +235,22 @@ def sklearn_comparison(
                     continue
             t0 = time.time()
 
-            algorithm.fit(X)
+            # catch warnings related to kneighbors_graph
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore",
+                    message="the number of connected components of the "
+                    + "connectivity matrix is [0-9]{1,2}"
+                    + " > 1. Completing it to avoid stopping the tree early.",
+                    category=UserWarning,
+                )
+                warnings.filterwarnings(
+                    "ignore",
+                    message="Graph is not fully connected, spectral embedding"
+                    + " may not work as expected.",
+                    category=UserWarning,
+                )
+                algorithm.fit(X)
 
             t1 = time.time()
             if hasattr(algorithm, "labels_"):
