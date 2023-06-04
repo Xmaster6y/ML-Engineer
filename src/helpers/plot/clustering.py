@@ -201,7 +201,7 @@ def sklearn_comparison(
         clustering_algorithms = [
             ("KMeans", kmeans),
             ("MiniBatch\nKMeans", two_means),
-            ("Biscecting\nKMeans", biscecting_kmeans),
+            ("Bisecting\nKMeans", biscecting_kmeans),
             ("Affinity\nPropagation", affinity_propagation),
             ("MeanShift", ms),
             ("Spectral\nClustering", spectral),
@@ -334,7 +334,10 @@ def cluster_analysis(data, model, n_c, cols, frac=None, seed_frac=42):
             data.shape[0], size=int(frac * data.shape[0]), replace=False
         )
 
-    df_seg = pd.DataFrame(data[numbers], columns=cols)
+    if isinstance(data, pd.DataFrame):
+        df_seg = data.iloc[numbers]
+    else:
+        df_seg = pd.DataFrame(data[numbers], columns=cols)
     df_seg["cluster"] = y[numbers]
     values = df_seg["cluster"].value_counts()
 
