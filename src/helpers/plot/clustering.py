@@ -388,7 +388,7 @@ def cluster_analysis(
         df_cat = pd.DataFrame()
         df_cat["cluster"] = y[numbers]
         df_cat[cat_col] = data.loc[numbers, cat_col]
-        sns.catplot(data=df, x=cat_col, hue="cluster", kind="count")
+        sns.catplot(data=df_cat, x=cat_col, hue="cluster", kind="count")
         plt.xticks(rotation=70)
         plt.title(" - ".join([f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(N_C)]))
         plt.show()
