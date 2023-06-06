@@ -305,7 +305,18 @@ def sklearn_comparison(
     plt.show()
 
 
-def cluster_analysis(data, model, n_c, cols, frac=None, seed_frac=42):
+def cluster_analysis(
+    data, 
+    model, 
+    n_c, 
+    cols, 
+    frac=None, 
+    seed_frac=42,
+    pair_plot=True,
+    box_plot=True,
+    cat_plot=False,
+    cat_col=None,
+):
     """
     Analyse the clusters of a clustering model.
 
@@ -340,31 +351,44 @@ def cluster_analysis(data, model, n_c, cols, frac=None, seed_frac=42):
         df_seg = pd.DataFrame(data[numbers], columns=cols)
     df_seg.loc[:, "cluster"] = y[numbers]
     values = df_seg["cluster"].value_counts()
-
-    sns.pairplot(df_seg, hue="cluster").fig.suptitle(
-        " - ".join(
-            [f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(n_c)]
-        ),
-        y=1.05,
-    )
-    plt.show()
-
-    minmaxsc = ColumnTransformer(
-        [("tr", MinMaxScaler(), cols), ("cls", "passthrough", ["cluster"])],
-        remainder="drop",
-    )
-    df_seg_sc = pd.DataFrame(
-        minmaxsc.fit_transform(df_seg), columns=df_seg.columns
-    )
-    df_seg_sc["cluster"] = df_seg_sc["cluster"].astype(int)
-    df_long_sc = pd.melt(
-        df_seg_sc, "cluster", var_name="column", value_name="value"
-    )
-    sns.boxplot(
-        x="column", hue="cluster", y="value", data=df_long_sc
-    ).set_title(
-        " - ".join(
-            [f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(n_c)]
+    
+    if pair_plot:
+        sns.pairplot(df_seg, hue="cluster").fig.suptitle(
+            " - ".join(
+                [f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(n_c)]
+            ),
+            y=1.05,
         )
-    )
-    plt.show()
+        plt.show()
+    
+    if box_plot:
+        minmaxsc = ColumnTransformer(
+            [("tr", MinMaxScaler(), cols), ("cls", "passthrough", ["cluster"])],
+            remainder="drop",
+        )
+        df_seg_sc = pd.DataFrame(
+            minmaxsc.fit_transform(df_seg), columns=df_seg.columns
+        )
+        df_seg_sc["cluster"] = df_seg_sc["cluster"].astype(int)
+        df_long_sc = pd.melt(
+            df_seg_sc, "cluster", var_name="column", value_name="value"
+        )
+        sns.boxplot(
+            x="column", hue="cluster", y="value", data=df_long_sc
+        ).set_title(
+            " - ".join(
+                [f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(n_c)]
+            )
+        )
+        plt.show()
+    
+    if cat_plot:
+        if cat_col is None:
+            raise ValueError("A categorical column should be specified")
+        df_cat = pd.DataFrame()
+        df_cat["cluster"] = y[numbers]
+        df_cat[cat_col] = data.loc[numbers, cat_col]
+        sns.catplot(data=df, x=cat_col, hue="cluster", kind="count")
+        plt.xticks(rotation=70)
+        plt.title(" - ".join([f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(N_C)]))
+        plt.show()
