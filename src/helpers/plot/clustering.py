@@ -306,11 +306,11 @@ def sklearn_comparison(
 
 
 def cluster_analysis(
-    data, 
-    model, 
-    n_c, 
-    cols, 
-    frac=None, 
+    data,
+    model,
+    n_c,
+    cols,
+    frac=None,
     seed_frac=42,
     pair_plot=True,
     box_plot=True,
@@ -351,19 +351,22 @@ def cluster_analysis(
         df_seg = pd.DataFrame(data[numbers], columns=cols)
     df_seg.loc[:, "cluster"] = y[numbers]
     values = df_seg["cluster"].value_counts()
-    
+
     if pair_plot:
-        sns.pairplot(df_seg, hue="cluster").fig.suptitle(
+        sns.pairplot(df_seg, hue="cluster", corner=True).fig.suptitle(
             " - ".join(
                 [f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(n_c)]
             ),
             y=1.05,
         )
         plt.show()
-    
+
     if box_plot:
         minmaxsc = ColumnTransformer(
-            [("tr", MinMaxScaler(), cols), ("cls", "passthrough", ["cluster"])],
+            [
+                ("tr", MinMaxScaler(), cols),
+                ("cls", "passthrough", ["cluster"]),
+            ],
             remainder="drop",
         )
         df_seg_sc = pd.DataFrame(
@@ -381,7 +384,7 @@ def cluster_analysis(
             )
         )
         plt.show()
-    
+
     if cat_plot:
         if cat_col is None:
             raise ValueError("A categorical column should be specified")
@@ -390,5 +393,9 @@ def cluster_analysis(
         df_cat[cat_col] = data.loc[numbers, cat_col]
         sns.catplot(data=df_cat, x=cat_col, hue="cluster", kind="count")
         plt.xticks(rotation=70)
-        plt.title(" - ".join([f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(n_c)]))
+        plt.title(
+            " - ".join(
+                [f"C{i}({values[i]/sum(values)*100:.1f}%)" for i in range(n_c)]
+            )
+        )
         plt.show()
