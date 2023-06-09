@@ -138,7 +138,7 @@ def sklearn_comparison(
     for i_dataset, (dataset, algo_params) in enumerate(final_datasets):
         # update parameters with dataset-specific values
         params = default_base.copy()  # type: ignore
-        params.update(algo_params)  # type: ignore
+        params |= algo_params
 
         X, y = dataset
 
@@ -227,12 +227,13 @@ def sklearn_comparison(
             ]
 
         for name, algorithm in clustering_algorithms:
-            if isinstance(algorithms_to_take[0], str):
-                if name not in algorithms_to_take:
-                    continue
-            else:
-                if not algorithms_to_take[i_dataset]:
-                    continue
+            if (
+                isinstance(algorithms_to_take[0], str)
+                and name not in algorithms_to_take
+                or not isinstance(algorithms_to_take[0], str)
+                and not algorithms_to_take[i_dataset]
+            ):
+                continue
             t0 = time.time()
 
             # catch warnings related to kneighbors_graph
