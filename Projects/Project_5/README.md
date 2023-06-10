@@ -10,6 +10,6 @@ StackOverflow question's tags recommandation.
 
 * API code
 
-* Deployed API [->]()
+* Deployed API [->](https://oc-nlp.azurewebsites.net/docs)
 
 * Presentation (fr) [->](./presentation.pdf)
