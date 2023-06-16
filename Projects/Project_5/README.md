@@ -8,7 +8,7 @@ StackOverflow question's tags recommandation.
 
 * Trials modelisation notebook
 
-* API code
+* API code [->](./api_code/)
 
 * Deployed API [->](https://oc-nlp.azurewebsites.net/docs)
 

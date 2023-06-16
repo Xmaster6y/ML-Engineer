@@ -1,5 +1,5 @@
-.PHONY: format
-format:
+.PHONY: checks
+checks:
 	pre-commit run --all-files
 
 .PHONY: test

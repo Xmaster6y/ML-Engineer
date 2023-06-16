@@ -5,6 +5,7 @@ Main API module.
 import logging
 import os
 
+from api.supervised.router import router as supervised_router
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -35,3 +36,10 @@ async def home():
 )
 async def env():
     return {k: v for k, v in os.environ.items()}
+
+
+app.include_router(
+    supervised_router,
+    prefix="/supervised",
+    tags=["SUPERVISED"],
+)
