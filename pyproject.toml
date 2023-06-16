@@ -34,6 +34,11 @@ dev = [
     'poetry',
     'sphinx',
 ]
+project = [
+    'uvicorn',
+    'fastapi',
+    'sentence_transformers',
+]
 
 [project.urls]
 "Homepage" = "https://github.com/Xmaster6y/ML-Engineer"
