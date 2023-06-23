@@ -2,7 +2,7 @@
 Supervised module schema.
 """
 
-from api.supervised.constants import ALL_MODELS
+from api.v1.supervised.constants import ALL_MODELS
 from pydantic import BaseModel, root_validator, validator
 
 

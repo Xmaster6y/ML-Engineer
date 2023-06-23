@@ -7,9 +7,9 @@ import pickle
 from typing import Any, Dict, List
 
 import numpy as np
-from api.constants import TAG_LIST
-from api.schema import Tag
-from api.supervised.constants import ALL_MODELS
+from api.v1.constants import TAG_LIST
+from api.v1.schema import Tag
+from api.v1.supervised.constants import ALL_MODELS
 from sentence_transformers import SentenceTransformer
 
 all_embeddings: Dict[str, SentenceTransformer] = {}

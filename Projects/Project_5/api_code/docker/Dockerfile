@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1
 RUN pip install --upgrade pip --no-cache
 RUN pip install fastapi uvicorn --no-cache
 RUN pip install scikit-learn --no-cache
-RUN pip install torch --no-cache
+RUN pip install torch --no-cache --index-url https://download.pytorch.org/whl/cpu
 RUN pip install sentence_transformers --no-cache
 
 EXPOSE 8000

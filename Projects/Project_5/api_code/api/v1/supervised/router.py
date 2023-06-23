@@ -4,10 +4,10 @@ Supervised module router.
 
 import logging
 
-from api.schema import TagResponse
-from api.supervised import models
-from api.supervised.constants import ALL_MODELS
-from api.supervised.schema import SupervisedTagRequest
+from api.v1.schema import TagResponse
+from api.v1.supervised import models
+from api.v1.supervised.constants import ALL_MODELS
+from api.v1.supervised.schema import SupervisedTagRequest
 from fastapi import APIRouter
 
 router = APIRouter()

@@ -1,3 +1,0 @@
-"""
-Supervised models module.
-"""
