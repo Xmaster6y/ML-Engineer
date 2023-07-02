@@ -1,15 +1,14 @@
 """
-v1 API module.
+v2 API module.
 """
 
 import logging
 import os
 
-from api.v1.supervised import router as supervised_router
 from fastapi import FastAPI
 
 app = FastAPI(
-    title="API v1",
+    title="API v2",
     description="The first version of my API",
 )
 
@@ -20,7 +19,7 @@ async def startup_event():
     Startup hook event.
     """
     logger = logging.getLogger("uvicorn")
-    logger.info("Starting up API v1...")
+    logger.info("Starting up API v2...")
 
 
 @app.get(
@@ -39,10 +38,3 @@ async def home():
 )
 async def env():
     return {k: v for k, v in os.environ.items()}
-
-
-app.include_router(
-    supervised_router,
-    prefix="/supervised",
-    tags=["SUPERVISED"],
-)
