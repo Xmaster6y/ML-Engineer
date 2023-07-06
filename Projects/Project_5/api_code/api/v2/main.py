@@ -8,8 +8,8 @@ import os
 from fastapi import FastAPI
 
 app = FastAPI(
-    title="API v2",
-    description="The first version of my API",
+    title="Tag API v2",
+    description="Second version of the Tag API.",
 )
 
 

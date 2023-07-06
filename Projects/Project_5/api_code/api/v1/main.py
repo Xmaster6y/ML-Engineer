@@ -9,8 +9,8 @@ from api.v1.supervised import router as supervised_router
 from fastapi import FastAPI
 
 app = FastAPI(
-    title="API v1",
-    description="The first version of my API",
+    title="Tag API v1",
+    description="First version of the Tag API.",
 )
 
 
