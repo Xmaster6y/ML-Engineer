@@ -15,8 +15,8 @@ def display_factorial_planes(
     labels: Optional[Sequence] = None,
     clusters: Optional[Sequence] = None,
     alpha: float = 1,
-    figsize: Tuple = (10, 8),
-    marker: str = ".",
+    figsize: Optional[Tuple] = None,
+    fontsize: Optional[int] = None,
 ):
     """
     Project the individuals on the factorial plan
@@ -35,10 +35,10 @@ def display_factorial_planes(
         The clusters of the individuals, by default None
     alpha : float, optional
         The transparency of the points, by default 1
-    figsize : Tuple[int, int], optional
-        The size of the figure, by default (10,8)
-    marker : str, optional
-        The marker of the points, by default "."
+    figsize : Tuple, optional
+        The size of the figure, by default None
+    fontsize : int, optional
+        The size of the font, by default None
 
     Raises
     ------
@@ -82,7 +82,7 @@ def display_factorial_planes(
                 _x,
                 _y + 0.05,
                 labels[i],
-                fontsize="14",
+                fontsize=fontsize,
                 ha="center",
                 va="center",
             )
