@@ -1,0 +1,21 @@
+name: prod-cd-pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-docker-image:
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      image-tag: prod
+      environment: prod
+    secrets: inherit
+  deploy-to-azure:
+    needs: [build-docker-image]
+    uses: ./.github/workflows/deploy-to-azure.yml
+    with:
+      image-tag: prod
+      environment: prod
+    secrets: inherit

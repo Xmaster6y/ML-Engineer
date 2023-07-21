@@ -23,7 +23,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Azure ACR Login
         run: az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
-      - name: Release Build
+      - name: Build and Push Docker Image
         run: |
           cd Projects/Project_5/api_code/ &&
           make build &&
