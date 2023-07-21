@@ -6,27 +6,6 @@ on:
     types: [published]
 
 jobs:
-  debug:
-    name: Debug
-    runs-on: ubuntu-latest
-    environment: dev
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Dump env
-        run: env | sort
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: pwd
-        run: pwd
-      - name: ls
-        run: ls -la
-      - name: cd
-        run: cd Projects/Project_5/api_code/
-      - name: pwd
-        run: pwd
   build-docker-image:
     name: Build and push Docker image
     runs-on: ubuntu-latest
