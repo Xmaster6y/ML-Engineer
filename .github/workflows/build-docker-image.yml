@@ -42,6 +42,6 @@ jobs:
         run: |
           cd Projects/Project_5/api_code/ &&
           make build &&
-          docker tag docker-web:latest \\
+          docker tag docker-web:latest \
             ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ github.event.release.tag_name }} &&
           docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ github.event.release.tag_name }}
