@@ -6,10 +6,14 @@ on:
       image-tag:
         required: true
         type: string
+      environment:
+        required: true
+        type: string
 
 jobs:
   deploy-to-azure:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
       - name: Azure Login
         uses: azure/login@v1
@@ -17,7 +21,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Azure ACR Login
         run: az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
-      - name: Release Deploy
+      - name: WebApp Deploy
         run: |
           az webapp config container set -g oc-learning -n ${{ secrets.AZURE_APP_SERVICE_NAME }} \
             --docker-custom-image-name shopifyappsregistry.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}

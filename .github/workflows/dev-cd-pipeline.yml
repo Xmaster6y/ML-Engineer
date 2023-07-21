@@ -10,10 +10,12 @@ jobs:
     uses: ./.github/workflows/build-docker-image.yml
     with:
       image-tag: dev
+      environment: dev
     secrets: inherit
   deploy-to-azure:
     needs: [build-docker-image]
     uses: ./.github/workflows/deploy-to-azure.yml
     with:
       image-tag: dev
+      environment: dev
     secrets: inherit
