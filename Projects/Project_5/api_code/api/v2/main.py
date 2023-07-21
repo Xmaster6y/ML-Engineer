@@ -37,4 +37,4 @@ async def home():
     summary="Environment variables",
 )
 async def env():
-    return {k: v for k, v in os.environ.items()}
+    return dict(os.environ)
