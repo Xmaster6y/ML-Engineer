@@ -22,6 +22,10 @@ jobs:
         run: pwd
       - name: ls
         run: ls -la
+      - name: cd
+        run: cd Projects/Project_5/api_code/
+      - name: pwd
+        run: pwd
   build-docker-image:
     name: Build and push Docker image
     runs-on: ubuntu-latest
