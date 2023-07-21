@@ -3,7 +3,6 @@ name: after-build
 on:
   workflow_run:
     workflows: [build-docker-image]
-    branches: projects
     types: [completed]
 
 jobs:
