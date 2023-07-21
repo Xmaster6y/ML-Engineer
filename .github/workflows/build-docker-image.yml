@@ -16,6 +16,10 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+      - name: pwd
+        run: pwd
+      - name: ls
+        run: ls -la
   build-docker-image:
     name: Build and push Docker image
     runs-on: ubuntu-latest
