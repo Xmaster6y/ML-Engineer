@@ -19,7 +19,7 @@ jobs:
       - name: pwd
         run: pwd
       - name: ls
-        run: ls -la
+        run: ls -la ..
   build-docker-image:
     name: Build and push Docker image
     runs-on: ubuntu-latest
