@@ -6,6 +6,7 @@ on:
 jobs:
   azure-login:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: Azure Login
         uses: azure/login@v1
