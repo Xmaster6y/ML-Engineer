@@ -9,6 +9,7 @@ jobs:
   debug:
     name: Debug
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -29,6 +30,7 @@ jobs:
   build-docker-image:
     name: Build and push Docker image
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -52,5 +54,5 @@ jobs:
           cd Projects/Project_5/api_code/ &&
           make build &&
           docker tag docker-web:latest \
-            ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:latest &&
-          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:latest
+            ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:dev&&
+          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:dev
