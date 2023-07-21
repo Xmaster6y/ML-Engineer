@@ -1,0 +1,34 @@
+name: build-docker-image
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump env
+        run: env | sort
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+  build-docker-image:
+    name: Build and push Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Azure ACR Login
+        run: az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
+      - name: Build
+        run: |
+          cd Projects/Project_5/api_code/ &&
+          make build &&
+          docker tag docker-web:latest \\
+            ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ github.event.release.tag_name }} &&
+          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ github.event.release.tag_name }}

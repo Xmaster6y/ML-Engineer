@@ -1,0 +1,15 @@
+name: azure-login
+
+on:
+  workflow_dispatch:
+
+jobs:
+  azure-login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Azure ACR Login
+        run: az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
