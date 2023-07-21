@@ -6,17 +6,18 @@ on:
       - projects
 
 jobs:
-  dev-cd-pipeline:
+  build-docker-image:
     runs-on: ubuntu-latest
     environment: dev
-    steps:
-      - name: Build Docker Image
-        uses: ./.github/workflows/build-docker-image.yml
-        with:
-          image-tag: dev
-        secrets: inherit
-      - name: Deploy to Azure
-        uses: ./.github/workflows/deploy-to-azure.yml
-        with:
-          image-tag: dev
-        secrets: inherit
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      image-tag: dev
+    secrets: inherit
+  deploy-to-azure:
+    runs-on: ubuntu-latest
+    environment: dev
+    needs: [build-docker-image]
+    uses: ./.github/workflows/deploy-to-azure.yml
+    with:
+      image-tag: dev
+    secrets: inherit
