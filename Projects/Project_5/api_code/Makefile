@@ -14,3 +14,4 @@ deploy:
 .PHONY: tty
 tty:
 	docker compose -f docker/docker-compose.yml exec web bash
+  
