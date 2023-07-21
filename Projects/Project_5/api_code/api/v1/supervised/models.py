@@ -25,22 +25,19 @@ class WrappedSupervisedModel:
         self.config: dict = ALL_MODELS[model_name]
 
     def __call__(self, title, body) -> List[Tag]:
-        if self.config["embedding_model"] is not None:
-            if not self.config["embed_targets"]:
-                raise ValueError("embed_targets must not be empty")
-            # Embed title and body
-            embeddings = []
-            global all_embeddings
-            for target in self.config["embed_targets"]:
-                embeddings.append(
-                    all_embeddings[self.config["embedding_model"]].encode(
-                        [eval(target)]
-                    )
-                )
-            # Concatenate embeddings
-            embedding = np.concatenate(embeddings, axis=0)
-        else:
+        if self.config["embedding_model"] is None:
             raise NotImplementedError("No embedding model is specified")
+        if not self.config["embed_targets"]:
+            raise ValueError("embed_targets must not be empty")
+        global all_embeddings
+        embeddings = [
+            all_embeddings[self.config["embedding_model"]].encode(
+                [eval(target)]
+            )
+            for target in self.config["embed_targets"]
+        ]
+        # Concatenate embeddings
+        embedding = np.concatenate(embeddings, axis=0)
         # Predict
         global all_models
         logger = logging.getLogger("uvicorn")
@@ -52,7 +49,7 @@ class WrappedSupervisedModel:
         proba = all_proba[:, 0, 1]
         # Get top tags
         top_tags = np.argsort(proba)[::-1]
-        tag_list = [
+        return [
             Tag(
                 label=TAG_LIST[tag_index],
                 probability=proba[tag_index],
@@ -60,7 +57,6 @@ class WrappedSupervisedModel:
             )
             for tag_index in top_tags
         ]
-        return tag_list
 
 
 all_wrapped_models: Dict[str, WrappedSupervisedModel] = {}
@@ -73,9 +69,7 @@ def init_models():
     logger = logging.getLogger("uvicorn")
     logger.info("Loading embedding models...")
     global all_embeddings
-    all_names = set(
-        [config["embedding_model"] for config in ALL_MODELS.values()]
-    )
+    all_names = {config["embedding_model"] for config in ALL_MODELS.values()}
     for name in all_names:
         all_embeddings[name] = SentenceTransformer(name)
         logger.info(f"Embedding model {name} loaded.")
@@ -83,7 +77,7 @@ def init_models():
 
     global all_models
     logger.info("Loading supervised models...")
-    all_names = set([config["model_name"] for config in ALL_MODELS.values()])
+    all_names = {config["model_name"] for config in ALL_MODELS.values()}
     for name in all_names:
         with open(f"api/models/{name}.pkl", "rb") as f:
             all_models[name] = pickle.load(f)
