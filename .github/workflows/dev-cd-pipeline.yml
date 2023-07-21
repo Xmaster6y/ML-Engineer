@@ -7,15 +7,11 @@ on:
 
 jobs:
   build-docker-image:
-    runs-on: ubuntu-latest
-    environment: dev
     uses: ./.github/workflows/build-docker-image.yml
     with:
       image-tag: dev
     secrets: inherit
   deploy-to-azure:
-    runs-on: ubuntu-latest
-    environment: dev
     needs: [build-docker-image]
     uses: ./.github/workflows/deploy-to-azure.yml
     with:
