@@ -10,6 +10,8 @@ jobs:
     name: Debug
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Dump env
         run: env | sort
       - name: Dump GitHub context
@@ -19,11 +21,13 @@ jobs:
       - name: pwd
         run: pwd
       - name: ls
-        run: ls -la ..
+        run: ls -la
   build-docker-image:
     name: Build and push Docker image
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Azure Login
         uses: azure/login@v1
         with:
