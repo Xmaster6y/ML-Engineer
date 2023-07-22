@@ -5,27 +5,27 @@ Main API module.
 import logging
 import os
 
+from api.constants import APP_ENV
 from api.supervised.router import router as supervised_router
 from fastapi import FastAPI
 
 app = FastAPI(
     title="Tag API",
-    description="""
+    description=f"""
 # API for Tagging Stack Overflow Questions
 
 This API allows you to tag Stack Overflow questions with the appropriate tags.
 
-## API Version 1
+**Environment**: {APP_ENV}
 
-- [Swagger UI](/v1/docs)
-- [Redoc](/v1/redoc)
+## Supervised
 
-Only implements a single endpoint for tagging questions.
+Multi label classification using supervised learning models.
 
-## API Version 2
+## Documentation
 
-- [Swagger UI](/v2/docs)
-- [Redoc](/v2/redoc)
+- [Swagger UI](/docs)
+- [Redoc](/redoc)
 """,
 )
 
