@@ -2,9 +2,10 @@
 Main API module.
 """
 
+import logging
+import os
 
-from api.v1 import app as app_v1
-from api.v2 import app as app_v2
+from api.supervised.router import router as supervised_router
 from fastapi import FastAPI
 
 app = FastAPI(
@@ -29,14 +30,35 @@ Only implements a single endpoint for tagging questions.
 )
 
 
+@app.on_event("startup")
+async def startup_event():
+    """
+    Startup hook event.
+    """
+    logger = logging.getLogger("uvicorn")
+    logger.info("Starting up API v1...")
+
+
 @app.get(
     "/",
     tags=["HOME"],
     summary="Home page",
 )
 async def home():
-    return {"message": "Welcome to the Tag API!"}
+    return {"message": "Home"}
 
 
-app.mount("/v1", app_v1)
-app.mount("/v2", app_v2)
+@app.get(
+    "/env",
+    tags=["HOME"],
+    summary="Environment variables",
+)
+async def env():
+    return dict(os.environ)
+
+
+app.include_router(
+    supervised_router,
+    prefix="/supervised",
+    tags=["SUPERVISED"],
+)
