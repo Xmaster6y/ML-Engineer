@@ -29,12 +29,12 @@ jobs:
           python3 resolve_models.py
       - name: Pull Old Docker Image
         run: |
-          docker pull ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }} &&
-          docker tag ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }} docker-web:latest
+          docker pull ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
       - name: Build Docker Image
         run: |
           cd Projects/Project_5/api_code/ &&
-          make build &&
+          docker compose -f docker/docker-compose.yml build --cache-from \
+            ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }} &&
           docker tag docker-web:latest \
             ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
       - name: Push Docker Image
