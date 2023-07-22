@@ -1,4 +1,4 @@
-name: build-docker-image
+name: test-docker-image
 
 on:
   workflow_call:
@@ -11,7 +11,7 @@ on:
         type: string
 
 jobs:
-  build-docker-image:
+  test-docker-image:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -23,12 +23,12 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Azure ACR Login
         run: az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
-      - name: Build Docker Image
+      - name: Pull Docker Image
         run: |
-          cd Projects/Project_5/api_code/ &&
-          make build &&
-          docker tag docker-web:latest \
-            ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
-      - name: Push Docker Image
+          docker pull ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
+      - name: Test Docker Image
         run: |
-          docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
+          docker run -d -p 80:8000 ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
+          sleep 5
+          curl -X POST -H "Content-Type: application/json" -d '{"text":"I love you"}' http://localhost:5000/
+          docker stop $(docker ps -q)
