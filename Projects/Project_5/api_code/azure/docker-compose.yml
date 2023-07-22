@@ -3,5 +3,6 @@ services:
     image: "<registry>.azurecr.io/oc-nlp-web:<tag>"
     environment:
       APP_ENV: <env>
+      OPENAI_API_KEY: <key>
     ports:
       - "80:8000"

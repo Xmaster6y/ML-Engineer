@@ -48,13 +48,19 @@ async def home():
     return {"message": "Home"}
 
 
-@app.get(
-    "/env",
-    tags=["HOME"],
-    summary="Environment variables",
-)
-async def env():
-    return dict(os.environ)
+if APP_ENV == "dev":
+
+    @app.get(
+        "/env",
+        tags=["HOME"],
+        summary="Environment variables",
+    )
+    async def env():
+        env_d = dict(os.environ)
+        for k, v in env_d.items():
+            if "SECRET" in k or "TOKEN" in k or "KEY" in k or "PASSWORD" in k:
+                env_d[k] = "********"
+        return env_d
 
 
 app.include_router(
