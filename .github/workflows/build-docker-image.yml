@@ -27,9 +27,9 @@ jobs:
         run: |
           cd Projects/Project_5/api_code/api/models/ &&
           python3 resolve_models.py
-      - name: Debug ls
+      - name: Pull Old Docker Image
         run: |
-          ls -la Projects/Project_5/api_code/api/models/
+          docker pull ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
       - name: Build Docker Image
         run: |
           cd Projects/Project_5/api_code/ &&
