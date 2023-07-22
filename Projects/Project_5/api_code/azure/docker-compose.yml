@@ -1,7 +1,7 @@
 services:
   web:
-    image: "shopifyappsregistry.azurecr.io/oc-nlp-web:v?"
+    image: "<registry>.azurecr.io/oc-nlp-web:<tag>"
     environment:
-      HAS_IT_WORKED: "yes"
+      APP_ENV: <env>
     ports:
       - "80:8000"

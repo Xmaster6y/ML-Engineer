@@ -34,7 +34,7 @@ class SupervisedTagRequest(BaseModel):
             raise ValueError(f"model_name must be in {ALL_MODELS.keys()}")
         return value
 
-    @root_validator
+    @root_validator(skip_on_failure=True)
     def check_n_tag_requested(cls, values):
         """
         Check n_tag_requested.

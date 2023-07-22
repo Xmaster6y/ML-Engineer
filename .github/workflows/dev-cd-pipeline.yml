@@ -12,8 +12,15 @@ jobs:
       image-tag: dev
       environment: dev
     secrets: inherit
-  deploy-to-azure:
+  test-docker-image:
     needs: [build-docker-image]
+    uses: ./.github/workflows/test-docker-image.yml
+    with:
+      image-tag: dev
+      environment: dev
+    secrets: inherit
+  deploy-to-azure:
+    needs: [test-docker-image]
     uses: ./.github/workflows/deploy-to-azure.yml
     with:
       image-tag: dev

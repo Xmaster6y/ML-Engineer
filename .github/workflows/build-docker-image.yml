@@ -23,10 +23,16 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Azure ACR Login
         run: az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
-      - name: Build and Push Docker Image
+      - name: Resolve Models
+        run: |
+          cd Projects/Project_5/api_code/api/models/ &&
+          python3 resolve_models.py
+      - name: Build Docker Image
         run: |
           cd Projects/Project_5/api_code/ &&
-          make build &&
+          docker compose -f docker/docker-compose.yml build --no-cache &&
           docker tag docker-web:latest \
-            ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }} &&
+            ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
+      - name: Push Docker Image
+        run: |
           docker push ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}

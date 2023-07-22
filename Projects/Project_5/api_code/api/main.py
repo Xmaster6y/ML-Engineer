@@ -2,31 +2,41 @@
 Main API module.
 """
 
+import logging
+import os
 
-from api.v1 import app as app_v1
-from api.v2 import app as app_v2
+from api.constants import APP_ENV
+from api.supervised.router import router as supervised_router
 from fastapi import FastAPI
 
 app = FastAPI(
     title="Tag API",
-    description="""
+    description=f"""
 # API for Tagging Stack Overflow Questions
 
 This API allows you to tag Stack Overflow questions with the appropriate tags.
 
-## API Version 1
+**Environment**: {APP_ENV}
 
-- [Swagger UI](/v1/docs)
-- [Redoc](/v1/redoc)
+## Supervised
 
-Only implements a single endpoint for tagging questions.
+Multi label classification using supervised learning models.
 
-## API Version 2
+## Documentation
 
-- [Swagger UI](/v2/docs)
-- [Redoc](/v2/redoc)
+- [Swagger UI](/docs)
+- [Redoc](/redoc)
 """,
 )
+
+
+@app.on_event("startup")
+async def startup_event():
+    """
+    Startup hook event.
+    """
+    logger = logging.getLogger("uvicorn")
+    logger.info("Starting up API v1...")
 
 
 @app.get(
@@ -35,8 +45,20 @@ Only implements a single endpoint for tagging questions.
     summary="Home page",
 )
 async def home():
-    return {"message": "Welcome to the Tag API!"}
+    return {"message": "Home"}
 
 
-app.mount("/v1", app_v1)
-app.mount("/v2", app_v2)
+@app.get(
+    "/env",
+    tags=["HOME"],
+    summary="Environment variables",
+)
+async def env():
+    return dict(os.environ)
+
+
+app.include_router(
+    supervised_router,
+    prefix="/supervised",
+    tags=["SUPERVISED"],
+)

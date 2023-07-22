@@ -1,4 +1,4 @@
-name: deploy-to-azure
+name: test-docker-image
 
 on:
   workflow_call:
@@ -11,7 +11,7 @@ on:
         type: string
 
 jobs:
-  deploy-to-azure:
+  test-docker-image:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -23,14 +23,17 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Azure ACR Login
         run: az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
+      - name: Pull Docker Image
+        run: |
+          docker pull ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }}
       - name: Edit Compose File
         run: |
           sed -i 's/<tag>/${{ inputs.image-tag }}/g' Projects/Project_5/api_code/azure/docker-compose.yml
           sed -i 's/<registry>/${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}/g' Projects/Project_5/api_code/azure/docker-compose.yml
           sed -i 's/<env>/${{ inputs.environment }}/g' Projects/Project_5/api_code/azure/docker-compose.yml
-      - name: WebApp Deploy
+      - name: Test Docker Image
         run: |
-          az webapp config container set -g oc-learning -n ${{ secrets.AZURE_APP_SERVICE_NAME }} \
-            --docker-custom-image-name ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }} \
-            --multicontainer-config-type COMPOSE \
-            --multicontainer-config-file Projects/Project_5/api_code/azure/docker-compose.yml
+          docker compose -f Projects/Project_5/api_code/azure/docker-compose.yml up -d &&
+          sleep 60 &&
+          curl http://localhost/ &&
+          docker stop $(docker ps -q)
