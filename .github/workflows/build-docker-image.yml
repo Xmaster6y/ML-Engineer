@@ -25,11 +25,11 @@ jobs:
         run: az acr login -n ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}
       - name: Resolve Models
         run: |
-          cd Projects/Project_5/api_code/models/ &&
+          cd Projects/Project_5/api_code/api/models/ &&
           python3 resolve_models.py
       - name: Debug ls
         run: |
-          ls -la Projects/Project_5/api_code/models/
+          ls -la Projects/Project_5/api_code/api/models/
       - name: Build Docker Image
         run: |
           cd Projects/Project_5/api_code/ &&
