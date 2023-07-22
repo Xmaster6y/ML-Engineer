@@ -33,7 +33,7 @@ jobs:
           sed -i 's/<env>/${{ inputs.environment }}/g' Projects/Project_5/api_code/azure/docker-compose.yml
       - name: Test Docker Image
         run: |
-          docker compose -f Projects/Project_5/api_code/azure/docker-compose.yml up &&
+          docker compose -f Projects/Project_5/api_code/azure/docker-compose.yml up -d &&
           sleep 60 &&
           curl http://localhost/ &&
           docker stop $(docker ps -q)
