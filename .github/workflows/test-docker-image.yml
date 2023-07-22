@@ -37,6 +37,6 @@ jobs:
       - name: Test Docker Image
         run: |
           docker run -d -p 80:8000 ${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}.azurecr.io/oc-nlp-web:${{ inputs.image-tag }} &&
-          sleep 5 &&
+          sleep 30 &&
           curl http://localhost/ &&
           docker stop $(docker ps -q)
