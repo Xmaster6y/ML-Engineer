@@ -6,6 +6,7 @@ import logging
 import os
 
 from api.constants import APP_ENV
+from api.semisupervised.router import router as semisupervised_router
 from api.supervised.router import router as supervised_router
 from fastapi import FastAPI
 
@@ -36,7 +37,7 @@ async def startup_event():
     Startup hook event.
     """
     logger = logging.getLogger("uvicorn")
-    logger.info("Starting up API v1...")
+    logger.info("Starting up API...")
 
 
 @app.get(
@@ -67,4 +68,10 @@ app.include_router(
     supervised_router,
     prefix="/supervised",
     tags=["SUPERVISED"],
+)
+
+app.include_router(
+    semisupervised_router,
+    prefix="/semisupervised",
+    tags=["SEMI-SUPERVISED"],
 )

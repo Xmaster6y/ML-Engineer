@@ -1,12 +1,12 @@
 """
-Supervised module schema.
+Semi-supervised module schema.
 """
 
-from api.supervised.constants import ALL_MODELS, LENGTH_LIMIT
+from api.semisupervised.constants import ALL_MODELS, LENGTH_LIMIT
 from pydantic import BaseModel, root_validator, validator
 
 
-class SupervisedTagRequest(BaseModel):
+class SemisupervisedTagRequest(BaseModel):
     """
     Supervised tag request schema.
     """
@@ -34,20 +34,6 @@ class SupervisedTagRequest(BaseModel):
         if value not in ALL_MODELS.keys():
             raise ValueError(f"model_name must be in {ALL_MODELS.keys()}")
         return value
-
-    @root_validator(skip_on_failure=True)
-    def check_n_tag_requested(cls, values):
-        """
-        Check n_tag_requested.
-        """
-        n_tag_requested = values.get("n_tag_requested")
-        model_name = values.get("model_name", 1)
-        if n_tag_requested > ALL_MODELS[model_name]["n_tag"]:
-            raise ValueError(
-                f"n_tag_requested must be less than or equal to "
-                f"{ALL_MODELS[model_name]['n_tag']}"
-            )
-        return values
 
     @root_validator(skip_on_failure=True)
     def check_length(cls, values):

@@ -1,7 +1,6 @@
 {
     "lr_50": {
         "model_name": "lr_50",
-        "model_type": "sklearn",
         "id": "1tgfKMoax6fGMY79INb1rZjnRCcfGtpy-"
     }
 }

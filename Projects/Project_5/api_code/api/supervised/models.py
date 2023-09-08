@@ -24,7 +24,7 @@ class WrappedSupervisedModel:
     def __init__(self, model_name: str):
         self.config: dict = ALL_MODELS[model_name]
 
-    def __call__(self, title, body) -> List[Tag]:
+    def __call__(self, title, body_text, body_code) -> List[Tag]:
         if self.config["embedding_model"] is not None:
             if not self.config["embed_targets"]:
                 raise ValueError("embed_targets must not be empty")
