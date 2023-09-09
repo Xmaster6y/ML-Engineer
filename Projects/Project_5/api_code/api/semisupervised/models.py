@@ -82,7 +82,7 @@ class WrappedSemisupervisedModel:
         logger.info(f"Usage: {usage}")
         logger.info(f"Info: {info}")
         tag_index_l = extract_tags(info)
-        tag_list = [
+        return [
             Tag(
                 label=tag,
                 probability=None,
@@ -90,7 +90,6 @@ class WrappedSemisupervisedModel:
             )
             for tag, index in tag_index_l
         ]
-        return tag_list
 
 
 all_wrapped_models: Dict[str, WrappedSemisupervisedModel] = {}

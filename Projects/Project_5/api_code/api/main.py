@@ -58,7 +58,7 @@ if APP_ENV == "dev":
     )
     async def env():
         env_d = dict(os.environ)
-        for k, v in env_d.items():
+        for k in env_d:
             if "SECRET" in k or "TOKEN" in k or "KEY" in k or "PASSWORD" in k:
                 env_d[k] = "********"
         return env_d
