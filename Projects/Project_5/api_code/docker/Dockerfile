@@ -9,6 +9,7 @@ RUN pip install fastapi==0.97.0 --no-cache
 RUN pip install scikit-learn==1.2.2 --no-cache
 RUN pip install torch --no-cache --index-url https://download.pytorch.org/whl/cpu
 RUN pip install sentence_transformers --no-cache
+RUN pip install openai --no-cache
 
 EXPOSE 8000
 WORKDIR /app

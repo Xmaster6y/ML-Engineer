@@ -3,6 +3,8 @@ repos:
     rev: v4.4.0
     hooks:
     -   id: check-added-large-files
+        args:
+        -   --maxkb=800
     -   id: check-yaml
     -   id: check-json
     -   id: check-toml
@@ -42,6 +44,9 @@ repos:
     hooks:
     -   id: isort
         name: isort (python)
+        args:
+        -   --profile=black
+        -   --line-length=79
 -   repo: local
     hooks:
       - id: pytest-check

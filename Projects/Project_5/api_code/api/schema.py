@@ -2,7 +2,7 @@
 API schemas.
 """
 
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, validator
 
@@ -13,7 +13,7 @@ class Tag(BaseModel):
     """
 
     label: str
-    probability: float
+    probability: Optional[float]
     popularity: int
 
     @validator("probability")
@@ -21,7 +21,7 @@ class Tag(BaseModel):
         """
         Validate probability.
         """
-        if value < 0 or value > 1:
+        if value is not None and (value < 0 or value > 1):
             raise ValueError("probability must be between 0.5 and 1")
         return value
 
@@ -41,3 +41,11 @@ class TagResponse(BaseModel):
     """
 
     tag_list: List[Tag]
+
+
+class ErrorResponse(BaseModel):
+    """
+    Error response schema.
+    """
+
+    error: str

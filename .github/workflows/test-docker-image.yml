@@ -31,6 +31,7 @@ jobs:
           sed -i 's/<tag>/${{ inputs.image-tag }}/g' Projects/Project_5/api_code/azure/docker-compose.yml
           sed -i 's/<registry>/${{ secrets.AZURE_CONTAINER_REGISTRY_NAME }}/g' Projects/Project_5/api_code/azure/docker-compose.yml
           sed -i 's/<env>/${{ inputs.environment }}/g' Projects/Project_5/api_code/azure/docker-compose.yml
+          sed -i 's/<key>/${{ secrets.OPENAI_API_KEY }}/g' Projects/Project_5/api_code/azure/docker-compose.yml
       - name: Test Docker Image
         run: |
           docker compose -f Projects/Project_5/api_code/azure/docker-compose.yml up -d &&

@@ -1,15 +1,16 @@
 """
-Supervised module router.
+Semi-supervised module router.
 """
 
 import logging
 
 from api.schema import ErrorResponse, TagResponse
-from api.supervised import models
-from api.supervised.constants import ALL_MODELS
-from api.supervised.schema import SupervisedTagRequest
+from api.semisupervised import models
+from api.semisupervised.constants import ALL_MODELS
+from api.semisupervised.schema import SemisupervisedTagRequest
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
+from openai.error import AuthenticationError
 
 router = APIRouter()
 
@@ -20,7 +21,7 @@ async def startup_event():
     Startup hook event.
     """
     logger = logging.getLogger("uvicorn")
-    logger.info("Supervised router starting up...")
+    logger.info("Semi-supervised router starting up...")
     logger.info("Loading supervised models...")
     models.init_models()
 
@@ -35,7 +36,7 @@ async def info():
     response_model=TagResponse,
     responses={500: {"model": ErrorResponse}},
 )
-def tag(request: SupervisedTagRequest):
+def tag(request: SemisupervisedTagRequest):
     """
     Tag.
     """
@@ -49,6 +50,10 @@ def tag(request: SupervisedTagRequest):
     try:
         tag_list = models.all_wrapped_models[model_name](
             title, body_text, body_code
+        )
+    except AuthenticationError:
+        return JSONResponse(
+            status_code=500, content={"error": "OpenAI API key invalid"}
         )
     except Exception as e:
         logger.error(e)
