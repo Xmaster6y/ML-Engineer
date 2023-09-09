@@ -2,5 +2,9 @@
     "lr_50": {
         "model_name": "lr_50",
         "id": "1tgfKMoax6fGMY79INb1rZjnRCcfGtpy-"
+    },
+    "lr_20": {
+        "model_name": "lr_20",
+        "id": "1z94mLAGeVQPC353xnCHh4AbqVtxhdE9v"
     }
 }

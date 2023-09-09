@@ -14,6 +14,10 @@ ALL_MODELS = {
         "model_name": "gpt-3.5-turbo",
         "model_type": "openai",
     },
+    "gpt-4": {
+        "model_name": "gpt-4",
+        "model_type": "openai",
+    },
 }
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")

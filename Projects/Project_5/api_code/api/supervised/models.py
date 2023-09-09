@@ -31,6 +31,8 @@ class WrappedSupervisedModel:
             # Embed title and body
             embeddings = []
             global all_embeddings
+            titlecode = title + "\n\n" + body_code  # noqa: F841
+            titletext = title + "\n\n" + body_text  # noqa: F841
             for target in self.config["embed_targets"]:
                 embeddings.append(
                     all_embeddings[self.config["embedding_model"]].encode(
@@ -38,7 +40,7 @@ class WrappedSupervisedModel:
                     )
                 )
             # Concatenate embeddings
-            embedding = np.concatenate(embeddings, axis=0)
+            embedding = np.concatenate(embeddings, axis=1)
         else:
             raise NotImplementedError("No embedding model is specified")
         # Predict
@@ -49,7 +51,10 @@ class WrappedSupervisedModel:
             all_models[self.config["model_name"]].predict_proba(embedding)
         )
         logger.info(f"Proba shape: {all_proba.shape}")
-        proba = all_proba[:, 0, 1]
+        try:
+            proba = all_proba[:, 0, 1]
+        except:  # noqa: E722
+            proba = all_proba[0, :]
         # Get top tags
         top_tags = np.argsort(proba)[::-1]
         tag_list = [
